@@ -6,12 +6,20 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
     private Rigidbody rb;
+    [SerializeField] private AudioClip jumpSound;
+    //[SerializeField] private AudioClip walkingSound;
+
+    private AudioSource audioSource1; 
+    private AudioSource audioSource2; 
 
     private bool isGrounded;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        audioSource1 = GetComponent<AudioSource>(); 
+        audioSource2 = GetComponent<AudioSource>(); 
     }
 
     // Update is called once per frame
@@ -28,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Jump");
             rb.AddForce(new Vector3(0, 20.0f, 0), ForceMode.Impulse);
             isGrounded = false;
+            audioSource1.clip = jumpSound;
+            audioSource1.Play();
         }
 
         float currMoveSpeed;
@@ -48,8 +58,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput) * currMoveSpeed;
 
        
-
-        
+                
 
         Vector3 cameraForward = Camera.main.transform.forward;
 
