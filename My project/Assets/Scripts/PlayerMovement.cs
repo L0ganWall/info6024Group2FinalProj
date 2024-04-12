@@ -30,8 +30,36 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput) * moveSpeed;
+        float currMoveSpeed;
+
+        if(Input.GetKey(KeyCode.LeftControl))
+        {
+            currMoveSpeed = moveSpeed * 0.5f;
+        }
+        else if(Input.GetKey(KeyCode.LeftShift))
+        {
+            currMoveSpeed = moveSpeed * 2.0f;
+        }
+        else
+        {
+            currMoveSpeed = moveSpeed;
+        }
+
+        Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput) * currMoveSpeed;
+
+       
+
+        
+
+        Vector3 cameraForward = Camera.main.transform.forward;
+
+        Quaternion playerOrientation = Quaternion.LookRotation(cameraForward);
+
+        movement = playerOrientation * movement;
 
         rb.MovePosition(rb.position + movement * Time.fixedDeltaTime);
+
+        rb.MoveRotation(playerOrientation);
+
     }
 }
